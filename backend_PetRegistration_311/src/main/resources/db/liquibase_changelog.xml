@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <property name="schemaName" value="petreg"></property>
+    <property name="author=" value="db-designer"></property>
+    <changeSet id="v1-01-01" author="${author}">
+    
+ <createTable schemaName="${schemaName}" tableName="PetOwner">
+	<column name="PetOwnerId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Name" type="VARCHAR(250)" />
+    
+     <column name="ContactNumber" type="VARCHAR(250)" />
+    
+     <column name="Address" type="VARCHAR(250)" />
+    
+     <column name="Pincode" type="VARCHAR(250)" />
+    
+  	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="VeterinaryDoctor">
+	<column name="DoctorId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="DoctorName" type="VARCHAR(250)" />
+    
+     <column name="Qualification" type="VARCHAR(250)" />
+    
+     <column name="Specialization" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Vaccine">
+	<column name="VaccineId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="IsVaccinated" type="BOOLEAN" />
+    
+     <column name="VaccineName" type="VARCHAR(250)" />
+    
+     <column name="VaccinatedDate" type="TIMESTAMP" />
+    
+     <column name="NextDueDate" type="TIMESTAMP" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="PetVisit">
+	<column name="ClinicVisitId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="DateOfVisit" type="TIMESTAMP" />
+    
+     <column name="VisitReason" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Pet">
+	<column name="PetId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="PetName" type="VARCHAR(250)" />
+    
+     <column name="Breed" type="VARCHAR(250)" />
+    
+     <column name="Weight" type="INTEGER" />
+    
+     <column name="IsVaccinated" type="BOOLEAN" />
+    
+     <column name="VaccineName" type="VARCHAR(250)" />
+    
+     <column name="VaccineDueDate" type="TIMESTAMP" />
+    
+     <column name="Gender" type="VARCHAR(250)" />
+    
+     <column name="PetType" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+	
+  <createTable schemaName="${schemaName}" tableName="PetVaccines">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="PetId" type="BIGINT" />
+	<column name="VaccineId" type="INTEGER" />
+</createTable>
+  <createTable schemaName="${schemaName}" tableName="PetPetVisits">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="PetId" type="BIGINT" />
+	<column name="ClinicVisitId" type="BIGINT" />
+</createTable>
+  <createTable schemaName="${schemaName}" tableName="PetOwnerPets">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="PetOwnerId" type="BIGINT" />
+	<column name="PetId" type="BIGINT" />
+</createTable>
+  <createTable schemaName="${schemaName}" tableName="PetOwnerContacts">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="PetOwnerId" type="BIGINT" />
+	<column name="Contacts" type="VARCHAR(250)" />
+</createTable>
+
+ 
+	<addForeignKeyConstraint baseTableName="PetVaccines" baseTableSchemaName="${schemaName}"  baseColumnNames="PetId" constraintName="Vaccine_PetId_fk"
+	                                  referencedTableName="Pet" referencedTableSchemaName="${schemaName}" referencedColumnNames="PetId"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="PetVaccines" baseTableSchemaName="${schemaName}"  baseColumnNames="VaccineId" constraintName="Vaccine_VaccineId_fk"
+	                                  referencedTableName="Vaccine" referencedTableSchemaName="${schemaName}" referencedColumnNames="VaccineId"/>
+ 
+ 
+	<addForeignKeyConstraint baseTableName="PetPetVisits" baseTableSchemaName="${schemaName}"  baseColumnNames="PetId" constraintName="PetVisit_PetId_fk"
+	                                  referencedTableName="Pet" referencedTableSchemaName="${schemaName}" referencedColumnNames="PetId"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="PetPetVisits" baseTableSchemaName="${schemaName}"  baseColumnNames="ClinicVisitId" constraintName="PetVisit_ClinicVisitId_fk"
+	                                  referencedTableName="PetVisit" referencedTableSchemaName="${schemaName}" referencedColumnNames="ClinicVisitId"/>
+ 
+ 
+	<addForeignKeyConstraint baseTableName="PetOwnerPets" baseTableSchemaName="${schemaName}"  baseColumnNames="PetOwnerId" constraintName="Pet_PetOwnerId_fk"
+	                                  referencedTableName="PetOwner" referencedTableSchemaName="${schemaName}" referencedColumnNames="PetOwnerId"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="PetOwnerPets" baseTableSchemaName="${schemaName}"  baseColumnNames="PetId" constraintName="Pet_PetId_fk"
+	                                  referencedTableName="Pet" referencedTableSchemaName="${schemaName}" referencedColumnNames="PetId"/>
+ 
+ 
+	<addForeignKeyConstraint baseTableSchemaName="${schemaName}" baseTableName="PetOwnerContacts" baseColumnNames="PetOwnerId" constraintName="PetOwner_PetOwnerContacts_fk" referencedTableName="PetOwner"
+                                 	referencedColumnNames="PetOwnerId" referencedTableSchemaName="${schemaName}"/>
+ 
+	
+ 
+ 
+ 
+ 
+	<addColumn tableName="PetVisit" schemaName="${schemaName}">
+	    <column name="PetVisitDoctor" type="INTEGER"/>
+	</addColumn>
+	<addForeignKeyConstraint baseTableName="PetVisit" baseColumnNames="PetVisitDoctor" baseTableSchemaName="${schemaName}" constraintName="PetVisit_Doctor_fk" referencedTableName="VeterinaryDoctor"
+	                                 referencedColumnNames="DoctorId" referencedTableSchemaName="${schemaName}"/>
+ 
+
+ 
+	    </changeSet>
+</databaseChangeLog>

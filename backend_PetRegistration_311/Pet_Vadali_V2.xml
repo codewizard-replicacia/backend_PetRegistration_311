@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="Model">
+            <EntityType HasStream="false" Name="PetOwner">
+                <Key>
+                    <PropertyRef Name="PetOwnerId"/>
+                </Key>
+                <Property Name="PetOwnerId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="Name" Type="Edm.String" isUnique="false"/>
+                <Property Name="ContactNumber" Type="Edm.String" isUnique="false"/>
+                <Property Name="Address" Type="Edm.String" isUnique="false"/>
+                <Property Name="Pincode" Type="Edm.String" isUnique="false"/>
+                <Property Name="Contacts" Type="Collection(Edm.String)" isUnique="false"/>
+                <NavigationProperty Name="Pets" Type="Collection(Model.Pet)"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="PetVisit">
+                <Key>
+                    <PropertyRef Name="ClinicVisitId"/>
+                </Key>
+                <Property Name="ClinicVisitId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="DateOfVisit" Type="Edm.DateTimeOffset" isUnique="false"/>
+                <Property Name="VisitReason" Type="Edm.String" isUnique="false"/>
+                <NavigationProperty Name="Doctor" Type="Model.VeterinaryDoctor"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="VeterinaryDoctor">
+                <Key>
+                    <PropertyRef Name="DoctorId"/>
+                </Key>
+                <Property Name="DoctorId" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="DoctorName" Type="Edm.String" isUnique="false"/>
+                <Property Name="Qualification" Type="Edm.String" isUnique="false"/>
+                <Property Name="Specialization" Type="Edm.String" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="Vaccine">
+                <Key>
+                    <PropertyRef Name="VaccineId"/>
+                </Key>
+                <Property Name="VaccineId" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="IsVaccinated" Type="Edm.Boolean" isUnique="false"/>
+                <Property Name="VaccineName" Type="Edm.String" isUnique="false"/>
+                <Property Name="VaccinatedDate" Type="Edm.DateTimeOffset" isUnique="false"/>
+                <Property Name="NextDueDate" Type="Edm.DateTimeOffset" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="Pet">
+                <Key>
+                    <PropertyRef Name="PetId"/>
+                </Key>
+                <Property Name="PetId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="PetName" Type="Edm.String" isUnique="false"/>
+                <Property Name="Breed" Type="Edm.String" isUnique="false"/>
+                <Property Name="Weight" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="IsVaccinated" Type="Edm.Boolean" isUnique="false"/>
+                <Property Name="VaccineName" Type="Edm.String" isUnique="false"/>
+                <Property Name="VaccineDueDate" Type="Edm.DateTimeOffset" isUnique="false"/>
+                <Property Name="Gender" Type="Edm.String" isUnique="false"/>
+                <Property Name="PetType" Type="Edm.String" isUnique="false"/>
+                <NavigationProperty Name="PetVisits" Type="Collection(Model.PetVisit)"/>
+                <NavigationProperty Name="Vaccines" Type="Collection(Model.Vaccine)"/>
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="PetOwners" EntityType="Model.PetOwner">
+                    <NavigationPropertyBinding Path="Pets" Target="Pets"/>
+                </EntitySet>
+                <EntitySet Name="PetVisits" EntityType="Model.PetVisit">
+                    <NavigationPropertyBinding Path="Doctor" Target="VeterinaryDoctors"/>
+                </EntitySet>
+                <EntitySet Name="VeterinaryDoctors" EntityType="Model.VeterinaryDoctor"/>
+                <EntitySet Name="Vaccines" EntityType="Model.Vaccine"/>
+                <EntitySet Name="Pets" EntityType="Model.Pet">
+                    <NavigationPropertyBinding Path="PetVisits" Target="PetVisits"/>
+                    <NavigationPropertyBinding Path="Vaccines" Target="Vaccines"/>
+                </EntitySet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
